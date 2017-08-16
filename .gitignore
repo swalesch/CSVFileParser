@@ -1,0 +1,77 @@
+﻿# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+
+# =========================
+# Eclipse
+# =========================
+.metadata
+RemoteSystemsTempFiles
+.settings
+*.class
+.recommenders
+.classpath
+.project
+
+# =========================
+# Operating System Files
+# =========================
+
+# =========================
+# Windows
+# =========================
+*.cab
+*.msi
+*.msm
+*.msp
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.lnk
+
+# =========================
+# OSX
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+/bin/
+
+
+# =========================
+# Resources, Protokolls
+# =========================
+/resources/eg/
+
+
+# =========================
+# Gradle
+# =========================
+
+.gradle
+build
+
+
+
+
+
+
+
+
+
+
