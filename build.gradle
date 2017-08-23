@@ -9,8 +9,31 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+version = '0.0.1'
+
 repositories {
     jcenter()
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'CSV Parser',
+                   'Implementation-Version': version, 
+                   'Main-Class': 'com.files.Starter'
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'CSV Parser',
+                   'Implementation-Version': version, 
+                   'Main-Class': 'com.files.Starter'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
 
 dependencies {
