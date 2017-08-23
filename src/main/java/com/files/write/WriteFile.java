@@ -8,25 +8,33 @@ import com.files.parser.ParseFile;
 
 public class WriteFile {
 
-	private FileWriter writer;
+    private FileWriter writer;
+    private boolean isHeaderSet = false;
 
-	public WriteFile(String outputFolder) throws IOException {
-		writer = new FileWriter(outputFolder);
-	}
+    public WriteFile(String outputFolder) throws IOException {
+        writer = new FileWriter(outputFolder);
+    }
 
-	public void addOutput(ParseFile outputFile) {
-		List<String> output = outputFile.parse();
-		try {
-			for (String str : output) {
-				writer.write(str + "\n");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
-	}
+    public void addOutput(ParseFile outputFile) {
+        List<String> output = outputFile.parse();
+        try {
+            int i;
+            if (!isHeaderSet) {
+                isHeaderSet = true;
+                i = 0;
+            } else {
+                i = 1;
+            }
+            for (; i < output.size(); i++) {
+                writer.write(output.get(i) + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
 
-	public void close() throws IOException {
-		writer.close();
-	}
+    public void close() throws IOException {
+        writer.close();
+    }
 }
