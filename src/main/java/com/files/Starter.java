@@ -32,8 +32,16 @@ public class Starter {
             "-s" }, required = false, usage = "Sets a specific seperator. Default is ','")
     private String _seperator = ",";
 
-    @Option(name = "-filter", aliases = { "-f" }, required = false, usage = "Sets a column filter")
+    @Option(name = "-filter", aliases = {
+            "-f" }, required = false, usage = "Sets a column filter, can be used multiple times")
     private List<String> _columnFilter = Lists.newArrayList();
+
+    @Option(name = "-help", required = false, usage = "Shows the help manual you are seeing right now.")
+    private boolean _help;
+
+    @Option(name = "-ignoreHeader", required = false, usage = "If there are different header in your files, use this flag after adding all variants of the needed column to the filter option. There will be no further check, you have to be sure what you are doing.")
+    private boolean _ignoreHeader;
+
     @Argument
     private List<String> _arguments = new ArrayList<>();
 
@@ -45,19 +53,18 @@ public class Starter {
         CmdLineParser parser = new CmdLineParser(this);
         try {
             parser.parseArgument(args);
-
             if (!isNotNull(_inputPath, _outputFilePath)) {
                 throw new CmdLineException(parser, "-inputPath and -ouputFile has to be set",
                         new IllegalStateException());
             }
 
-            if (_headerRow < 0) {
-                throw new CmdLineException(parser, "-headerRow has to be positiv", new IllegalStateException());
+            if (_headerRow < 1) {
+                throw new CmdLineException(parser, "-headerRow has to be greater than 0", new IllegalStateException());
             }
 
             File inputFile = new File(_inputPath);
             System.out.println(inputFile);
-            WriteFile writeFile = new WriteFile(_outputFilePath);
+            WriteFile writeFile = new WriteFile(_outputFilePath, _ignoreHeader);
 
             new DirExplorer((level, path, file) -> path.endsWith(".csv"), (level, path, file) -> {
                 System.out.println("Parsing " + file.getAbsolutePath());
@@ -69,11 +76,18 @@ public class Starter {
             writeFile.close();
 
         } catch (CmdLineException e) {
+            if (_help) {
+                System.out.println("Options: ");
+                parser.printUsage(System.out);
+                return;
+            }
             System.err.println(e.getMessage());
             parser.printUsage(System.err);
             return;
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            System.err.println("Error: " + e.getMessage());
         }
     }
 

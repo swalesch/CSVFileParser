@@ -36,7 +36,8 @@ public class ParseFile {
                 continue;
             }
 
-            List<String> line = Util.convertStringToStringList(_inputFile._fileAsArrayList.get(i), _seperator);
+            List<String> line = Util.convertStringToStringListWithEscape(_inputFile._fileAsArrayList.get(i),
+                    _seperator);
 
             for (int columnId : columnFilter) {
                 outputLine.add(line.get(columnId));
@@ -46,10 +47,18 @@ public class ParseFile {
         return output;
     }
 
+    public String getFileName() {
+        return _inputFile._fileName;
+    }
+
+    public String getOriginalHeader() {
+        return _inputFile._fileAsArrayList.get(_headerRow);
+    }
+
     private List<String> getMetaData(int numberMetaData) {
         List<String> metaDatas = Lists.newArrayList();
         for (int i = 0; i < numberMetaData; i++) {
-            String metaData = Util.convertStringToStringList(_inputFile._fileAsArrayList.get(i), _seperator)
+            String metaData = Util.convertStringToStringListWithEscape(_inputFile._fileAsArrayList.get(i), _seperator)
                     .get(1);
             metaDatas.add(metaData);
         }
@@ -57,7 +66,7 @@ public class ParseFile {
     }
 
     private List<Integer> getColumnFilter(int headerRow) {
-        List<String> columNames = Util.convertStringToStringList(_inputFile._fileAsArrayList.get(headerRow),
+        List<String> columNames = Util.convertStringToStringListWithEscape(_inputFile._fileAsArrayList.get(headerRow),
                 _seperator);
         List<Integer> columnFilter = Lists.newArrayList();
         for (int j = 1; j < columNames.size(); j++) {
@@ -70,7 +79,7 @@ public class ParseFile {
 
     private String getHeader(int numberMetaData, int startLineData, int headerRow) {
         List<Object> header = Lists.newArrayList();
-        List<String> columNames = Util.convertStringToStringList(_inputFile._fileAsArrayList.get(headerRow),
+        List<String> columNames = Util.convertStringToStringListWithEscape(_inputFile._fileAsArrayList.get(headerRow),
                 _seperator);
         for (int i = 0; i < _inputFile._fileAsArrayList.size(); i++) {
             if (isEmptyLine(i)) {
@@ -81,7 +90,7 @@ public class ParseFile {
                 continue;
             }
 
-            String name = Util.convertStringToStringList(_inputFile._fileAsArrayList.get(i), _seperator)
+            String name = Util.convertStringToStringListWithEscape(_inputFile._fileAsArrayList.get(i), _seperator)
                     .get(0);
 
             if (i >= startLineData) {
